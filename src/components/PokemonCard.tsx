@@ -4,13 +4,18 @@ import { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 
 import { fetchPokemonDetails } from '../apis';
-import { PokemonDetail, ListPokemon } from '../models';
+import { PokemonDetail, ListPokemon, PokemonType } from '../models';
 import { useNavigate } from 'react-router-dom';
 
-export const PokemonCard: React.FC<ListPokemon> = ({ name, url }) => {
+export const PokemonCard: React.FC<ListPokemon> = ({ url }) => {
   const [pokemonDetails, setPokemonDetails] = useState<PokemonDetail | null>(
     null,
   );
+
+  const [type, setType] = useState([]);
+
+  //Navigate Object
+  const navigate = useNavigate();
 
   //Single Pokemon details API call
   const getPokemonDetails = async () => {
@@ -19,17 +24,10 @@ export const PokemonCard: React.FC<ListPokemon> = ({ name, url }) => {
     setPokemonDetails(res);
   };
 
-  const navigate = useNavigate();
-
+  //Open pokemon Details page
   const openPokemonDetails = () => {
     navigate('/pokemonDetails', { state: { pokemonDetails: pokemonDetails } });
   };
-
-  // Captalize first letter
-  function capitalizeFirstLetter(str: string | undefined) {
-    if (!str) return;
-    return str.charAt(0).toUpperCase() + str.slice(1);
-  }
 
   useEffect(() => {
     getPokemonDetails();
@@ -37,101 +35,120 @@ export const PokemonCard: React.FC<ListPokemon> = ({ name, url }) => {
 
   return (
     <CardContainer onClick={openPokemonDetails}>
-      <ImageHolder>
+      <ImageHolder type={pokemonDetails?.types[0].type.name || 'gray'}>
+        <TypeBackground
+          key={pokemonDetails?.types[0].type.name}
+          src={`assets/background/${pokemonDetails?.types[0].type.name}Bg.svg`}
+        ></TypeBackground>
         <Image
           src={pokemonDetails?.sprites.other['official-artwork'].front_default}
         ></Image>
       </ImageHolder>
+      {/* Pokemon Information */}
       <CardContent>
-        <CardNumber># {pokemonDetails?.id}</CardNumber>
-        <CardTitle>{capitalizeFirstLetter(pokemonDetails?.name)}</CardTitle>
-        <CardDetailsHolder>
+        <Name>{pokemonDetails?.name}</Name>
+        <PokemonTypeHolder>
+          <Number># {pokemonDetails?.id}</Number>
           {pokemonDetails?.types.map((item) => (
-            <CardDetails key={item?.type?.name} type={item?.type?.name}>
-              {capitalizeFirstLetter(item?.type?.name)}
-            </CardDetails>
+            <TypeIcon
+              alt={item?.type?.name}
+              key={item?.type?.name}
+              src={`assets/${item.type.name}.svg`}
+            ></TypeIcon>
           ))}
-        </CardDetailsHolder>
+        </PokemonTypeHolder>
       </CardContent>
     </CardContainer>
   );
 };
 
+const Image = styled.img`
+  width: 70%;
+  transition: all.8s;
+  z-index: 1;
+  transform: translateY(25%);
+`;
+
 //Styled Components
 const CardContainer = styled.div`
-  /* background-color: ${(props) => props.theme.colors.primary}; */
   width: 15%;
-  margin-block: 1%;
   display: flex;
   flex-direction: column;
+  background-color: #fff;
   justify-content: space-evenly;
   align-items: center;
   cursor: pointer;
-  border-bottom: 2px solid transparent;
+  border-radius: 14px;
+  overflow: hidden;
   color: ${(props) => props.theme.colors.text};
   transition: all.5s;
-  &:hover {
+  /* &:hover {
     transform: translateY(-15px);
-    transition: all.1s;
     border-bottom: 2px solid ${(props) => props.theme.colors.cardBGC};
-
-    /* box-shadow: inset 0 0 20px 2px gray; */
-    /* filter: saturate(2); */
+    transition: all.1s;
   }
-  &:hover img {
+  &:active {
+    transform: scale(0.9) translateY(-15px);
+    transition: all.1s;
+  }
+  &:hover ${Image} {
     transform: scale(1.3);
     filter: drop-shadow(0 0 2px ${(props) => props.theme.colors.dropShadow})
       saturate(2);
     transition: ease-out 0.3s;
-  }
+  } */
 `;
 
-const ImageHolder = styled.div`
+const ImageHolder = styled.div<{ type: PokemonType }>`
   display: flex;
   width: 100%;
-  border-radius: 10px;
-  height: 230px;
+  border-radius: 0 0 50% 50% / 0% 0% 20% 20%;
+  height: 150px;
   justify-content: center;
   align-items: center;
-  background-color: ${(props) => props.theme.colors.cardBGC};
-`;
-
-const Image = styled.img`
-  width: 70%;
-  height: 70%;
-  transition: all.8s;
+  position: relative;
+  background-color: ${({ theme, type }) =>
+    theme.pokemonType[type] || '#919AA2'};
 `;
 
 const CardContent = styled.div`
+  padding: 8px;
+  padding-top: 24px;
+  align-self: stretch;
   display: flex;
+  align-items: stretch;
   flex: 1;
-  width: 90%;
-  gap: 7px;
-  padding: 5%;
+  gap: 8px;
   flex-direction: column;
 `;
 
-const CardTitle = styled.h2`
-  font-size: 25px;
-  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+const Name = styled.h2`
+  font-size: 20px;
   font-weight: bold;
   margin: 0;
-  /* margin-bottom: 8px; */
+  text-transform: capitalize;
 `;
 
-const CardNumber = styled.div`
-  font-size: 15px;
+const Number = styled.div`
+  flex: 1;
+  font-size: 16px;
   color: gray;
   font-weight: 900;
 `;
 
-const CardDetailsHolder = styled.div`
+const PokemonTypeHolder = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 5%;
+  justify-content: flex-end;
+  gap: 8%;
 `;
 
-const CardDetails = styled.div<{ type: string }>`
+const TypeIcon = styled.img`
+  width: 24px;
+  height: 24px;
+`;
+
+const PokemonTypeText = styled.div<{ type: PokemonType }>`
   font-size: 0.9rem;
   color: white;
   margin-bottom: 8px;
@@ -141,20 +158,12 @@ const CardDetails = styled.div<{ type: string }>`
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  background-color: ${(props) => {
-    console.log(props.type);
-    if (props.type === 'water') {
-      return '#4592c4';
-    } else if (props.type === 'fire') {
-      return '#fd7d24';
-    } else if (props.type === 'grass') {
-      return '#9bcc50';
-    } else if (props.type === 'bug') {
-      return '#729f3f';
-    } else if (props.type === 'poison') {
-      return '#b97fc9';
-    } else {
-      return 'gray';
-    }
-  }};
+  background-color: ${(props) =>
+    props.theme.pokemonType[props.type] || '#919AA2'};
+`;
+
+const TypeBackground = styled.img`
+  width: 80%;
+  height: 80%;
+  position: absolute;
 `;

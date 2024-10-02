@@ -38,7 +38,7 @@ const Container = styled.div`
   flex-wrap: wrap;
   justify-content: space-evenly;
   align-items: first baseline;
-  gap: 2%;
+  gap: 16px;
   flex: 1;
   padding: 4% 5%;
   min-height: 100vh;

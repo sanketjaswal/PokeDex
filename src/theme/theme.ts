@@ -1,26 +1,38 @@
-interface DefaultTheme {
-  colors: {
-    primary: string;
-    secondary: string;
-    background: string;
-    text: string;
-    cardBGC: string;
-    dropShadow: string;
-  };
-}
+import { DefaultTheme } from 'styled-components';
 
 export const theme: DefaultTheme = {
   colors: {
     primary: 'black',
     secondary: 'green',
-    background: 'white',
+    background: 'black',
     text: '#313131',
     cardBGC: '#cfecf0',
     dropShadow: 'black',
   },
+  pokemonType: {
+    bug: '#91C12F',
+    dark: '#5A5465',
+    dragon: '#0B6DC3',
+    electric: '#F4D23C',
+    fairy: '#EC8FE6',
+    fighting: '#CE416B',
+    fire: '#FF9D55',
+    flying: '#89AAE3',
+    ghost: '#5269AD',
+    grass: '#63BC5A',
+    ground: '#D97845',
+    ice: '#73CEC0',
+    normal: '#919AA2',
+    poison: '#B567CE',
+    psychic: '#FA7179',
+    rock: '#C5B78C',
+    steel: '#5A8EA2',
+    water: '#5090D6',
+    gray: 'gray',
+  },
 };
 
-export const darkTheme: DefaultTheme = {
+export const darkTheme = {
   colors: {
     primary: 'white',
     secondary: 'blue',
@@ -28,5 +40,25 @@ export const darkTheme: DefaultTheme = {
     text: 'white',
     cardBGC: 'gray',
     dropShadow: 'gold',
+  },
+  pokemonType: {
+    bug: '#91C12F',
+    dark: '#5A5465',
+    dragon: '#0B6DC3',
+    electric: '#F4D23C',
+    fairy: '#EC8FE6',
+    fighting: '#CE416B',
+    fire: '#FF9D55',
+    flying: '#89AAE3',
+    ghost: '#5269AD',
+    grass: '#63BC5A',
+    ground: '#D97845',
+    ice: '#73CEC0',
+    normal: '#919AA2',
+    poison: '#B567CE',
+    psychic: '#FA7179',
+    rock: '#C5B78C',
+    steel: '#5A8EA2',
+    water: '#5090D6',
   },
 };

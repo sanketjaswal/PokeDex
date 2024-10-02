@@ -68,10 +68,31 @@ interface Stat {
   };
 }
 
+export type PokemonType =
+  | 'bug'
+  | 'dark'
+  | 'dragon'
+  | 'electric'
+  | 'fairy'
+  | 'fighting'
+  | 'fire'
+  | 'flying'
+  | 'ghost'
+  | 'grass'
+  | 'ground'
+  | 'ice'
+  | 'normal'
+  | 'poison'
+  | 'psychic'
+  | 'rock'
+  | 'steel'
+  | 'water'
+  | 'gray';
+
 interface Type {
   slot: number;
   type: {
-    name: string;
+    name: PokemonType;
     url: string;
   };
 }
