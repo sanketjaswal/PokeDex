@@ -12,6 +12,10 @@ export const PokemonCard: React.FC<ListPokemon> = ({ url }) => {
     null,
   );
 
+  const [currentImage, setCurrentImage] = useState<string>(
+    'assets/pokeball.svg',
+  );
+
   const [type, setType] = useState([]);
 
   //Navigate Object
@@ -29,6 +33,14 @@ export const PokemonCard: React.FC<ListPokemon> = ({ url }) => {
     navigate('/pokemonDetails', { state: { pokemonDetails: pokemonDetails } });
   };
 
+  //Handle Image loading
+  const handleImageLoad = () => {
+    const imageUrl =
+      pokemonDetails?.sprites.other['official-artwork'].front_default ||
+      'assets/pokeballl.png';
+    setCurrentImage(imageUrl);
+  };
+
   useEffect(() => {
     getPokemonDetails();
   }, []);
@@ -41,6 +53,9 @@ export const PokemonCard: React.FC<ListPokemon> = ({ url }) => {
           src={`assets/background/${pokemonDetails?.types[0].type.name}Bg.svg`}
         ></TypeBackground>
         <Image
+          className="card-image"
+          // onLoad={handleImageLoad}
+          // src={currentImage}
           src={pokemonDetails?.sprites.other['official-artwork'].front_default}
         ></Image>
       </ImageHolder>

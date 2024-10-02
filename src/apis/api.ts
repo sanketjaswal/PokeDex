@@ -1,7 +1,9 @@
-import axios from 'axios';
+import Axios from 'axios';
+import { setupCache } from 'axios-cache-interceptor';
 
-export const api = axios.create({
+const instance = Axios.create({
   baseURL: process.env.REACT_APP_POKEMON_URL,
-  timeout: 1000,
+  timeout: 2000,
   headers: { 'Content-Type': 'application/json' },
 });
+export const api = setupCache(instance);
