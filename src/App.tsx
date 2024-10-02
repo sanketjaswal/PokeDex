@@ -7,13 +7,15 @@ import './App.css';
 import { theme } from './theme/theme';
 import { Home } from './pages/Home';
 import { DetailsPage } from './pages/Details';
+import { PokemonDetails } from './pages/PokemonDetails';
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/pokemonDetails" element={<DetailsPage />} />
+        <Route path="/pokemonDetails" element={<PokemonDetails />} />
+        <Route path="/details" element={<DetailsPage />} />
       </Routes>
     </ThemeProvider>
   );

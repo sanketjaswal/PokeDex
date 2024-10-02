@@ -4,22 +4,21 @@ import { useLocation } from 'react-router-dom';
 
 import { styled } from 'styled-components';
 
-import { PokemonDetail } from '../models';
+import { PokemonDetail, PokemonType } from '../models';
 
 export const DetailsPage: React.FC = () => {
   const [pokemonDetails, setPokemonDetails] = useState<PokemonDetail | null>(
     null,
   );
+  const [type, setType] = useState<PokemonType | undefined>();
   const location = useLocation();
 
-  function capitalizeWhole(str: string | undefined) {
-    if (!str) return;
-    return str.toUpperCase();
-  }
+  useEffect(() => {
+    setType(pokemonDetails?.types[0].type.name);
+  }, [pokemonDetails]);
 
   useEffect(() => {
     setPokemonDetails(location.state.pokemonDetails);
-    console.log(location.state.pokemonDetails);
   }, []);
 
   return (
@@ -27,18 +26,19 @@ export const DetailsPage: React.FC = () => {
       <DetailsCard>
         <Header>
           {/* cover */}
-          <Cover>
+          <Cover type={type || 'gray'}>
             {/* image */}
+            <CoverImage src={`assets/background/${type}Bg.svg`}></CoverImage>
             <Image
               src={
                 pokemonDetails?.sprites.other['official-artwork'].front_default
               }
             ></Image>
             {/* Name */}
-            <Title>{capitalizeWhole(pokemonDetails?.name)}</Title>
+            <Title>{pokemonDetails?.name}</Title>
             <NumberHolder>
               {/* id */}
-              <PokemonId>{pokemonDetails?.id}</PokemonId>
+              <PokemonId type={type || 'gray'}>{pokemonDetails?.id}</PokemonId>
             </NumberHolder>
           </Cover>
           <BelowCover>
@@ -73,65 +73,73 @@ export const DetailsPage: React.FC = () => {
 const Container = styled.div`
   width: 100vw;
   min-height: 100vh;
-  background-color: ${(props) => props.theme.colors.cardBGC};
+  background-color: ${(props) => props.theme.colors.background};
   display: flex;
+  /* background-color: #fff; */
   justify-content: center;
 `;
 const DetailsCard = styled.div`
-  width: 50%;
-  background-color: ${(props) => props.theme.colors.background};
-  /* box-shadow: inset 0 0 20px 5px gray; */
+  width: 100%;
   display: flex;
+  background-color: #fff;
   flex-direction: column;
   align-items: center;
-  padding-block: 3%;
+  /* padding-block: 3%; */
 `;
 
 const Header = styled.div`
-  width: 90%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   /* background-color: red; */
 `;
 
-const Cover = styled.div`
+const Cover = styled.div<{ type: PokemonType }>`
   background-color: gray;
   width: 100%;
   height: 250px;
-  border-radius: 100px 70px 60px 80px;
+  border-radius: 0px 0px 200px 200px;
   z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: relative;
-  &:hover img {
-    /* filter: saturate(2); */
-  }
+  background-color: ${(props) => props.theme.pokemonType[props.type] || 'gray'};
+`;
+
+const CoverImage = styled.img`
+  width: 90%;
+  height: 90%;
+  position: absolute;
 `;
 
 const Title = styled.h1`
-  /* background-color: blue; */
   position: absolute;
   font-size: 60px;
-  bottom: -13%;
+  bottom: -28%;
   right: 8%;
+  padding: 0;
   margin: 0;
-  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  text-transform: capitalize;
+
+  font-family: 'Pokemon Solid', sans-serif;
 `;
 
 const Image = styled.img`
-  /* background-color: green; */
   width: 310px;
   position: absolute;
   bottom: -40%;
-  left: -5%;
+  /* left: -3%; */
   filter: saturate(2);
 `;
 
 const NumberHolder = styled.div`
-  background-color: green;
+  background-color: #ffffffcf;
   width: 80px;
   height: 80px;
   margin: 0;
   position: absolute;
-  right: -5%;
+  left: 5%;
   bottom: 35%;
   border-radius: 50%;
   display: flex;
@@ -139,9 +147,9 @@ const NumberHolder = styled.div`
   align-items: center;
 `;
 
-const PokemonId = styled.h2`
+const PokemonId = styled.h2<{ type: PokemonType }>`
   font-size: 40px;
-  color: white;
+  color: ${(props) => props.theme.pokemonType[props.type] || 'gray'};
 `;
 
 const BelowCover = styled.div`

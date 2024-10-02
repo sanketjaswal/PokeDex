@@ -127,6 +127,7 @@ const Name = styled.h2`
   font-weight: bold;
   margin: 0;
   text-transform: capitalize;
+  font-family: 'Pokemon Hollow', sans-serif;
 `;
 
 const Number = styled.div`
