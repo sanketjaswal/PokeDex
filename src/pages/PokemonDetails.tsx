@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { styled } from 'styled-components';
-import { PokemonDetail, PokemonType } from '../models';
 import { useLocation } from 'react-router-dom';
+
+import { styled } from 'styled-components';
+
+import { PokemonDetail, PokemonType } from '../models';
 
 export const PokemonDetails: React.FC = () => {
   const [pokemonDetails, setPokemonDetails] = useState<PokemonDetail | null>(
@@ -64,12 +66,8 @@ export const PokemonDetails: React.FC = () => {
         </SubDetailsCard>
       </DetailsCard>
       <MoreDetails>
-        {/* <HeadingContainer> */}
+        <Heading>Profile</Heading>
         <Heading>Evolution</Heading>
-        {/* </HeadingContainer> */}
-        {/* <HeadingContainer> */}
-        <Heading>Evolution</Heading>
-        {/* </HeadingContainer> */}
         <EvolutionContainer>
           <EvolutionCard>
             <EvolutionImage

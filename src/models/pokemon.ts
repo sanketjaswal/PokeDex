@@ -5,9 +5,9 @@ export interface ListPokemon {
 }
 
 // Result of Pokemon list API
-export interface PokemonListResponse {
+export interface ListResponse<T = unknown> {
   count: number;
   next: string | null;
   previous: string | null;
-  results: ListPokemon[];
+  results: T[];
 }
