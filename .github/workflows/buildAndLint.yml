@@ -1,0 +1,37 @@
+name: Build and Test
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  # Job 1: Lint
+  lint:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install client dependencies
+        run: |
+          npm install
+
+      - name: Run ESLint on client
+        run: |
+          npm run lint
+
+  # Job 2: Build
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install client dependencies
+        run: |
+          npm install
+
+      - name: Run client build
+        run: |
+          npm run build
