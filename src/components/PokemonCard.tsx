@@ -1,81 +1,80 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 
-import { styled } from 'styled-components';
+import { keyframes, styled } from 'styled-components';
 
 import { fetchPokemonDetails } from '../apis';
 import { PokemonDetail, ListPokemon, PokemonType } from '../models';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 export const PokemonCard: React.FC<ListPokemon> = ({ url }) => {
   const [pokemonDetails, setPokemonDetails] = useState<PokemonDetail | null>(
     null,
   );
-
-  const [currentImage, setCurrentImage] = useState<string>(
-    'assets/pokeball.svg',
-  );
-
-  const [type, setType] = useState([]);
-
-  //Navigate Object
-  const navigate = useNavigate();
+  const [id, setId] = useState<string>();
 
   //Single Pokemon details API call
-  const getPokemonDetails = async () => {
-    const res = await fetchPokemonDetails(url);
-    // console.log(name, res);
-    setPokemonDetails(res);
-  };
-
-  //Open pokemon Details page
-  const openPokemonDetails = () => {
-    navigate('/pokemonDetails', { state: { pokemonDetails: pokemonDetails } });
-  };
-
-  //Handle Image loading
-  const handleImageLoad = () => {
-    const imageUrl =
-      pokemonDetails?.sprites.other['official-artwork'].front_default ||
-      'assets/pokeballl.png';
-    setCurrentImage(imageUrl);
+  const getPokemonDetails = async (pokeid: string) => {
+    try {
+      const res = await fetchPokemonDetails(pokeid);
+      setPokemonDetails(res);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   useEffect(() => {
-    getPokemonDetails();
+    // console.log(url);
+    setId(url.split('/')[6]);
+    getPokemonDetails(url.split('/')[6]);
   }, []);
 
   return (
-    <CardContainer onClick={openPokemonDetails}>
-      <ImageHolder type={pokemonDetails?.types[0].type.name || 'gray'}>
-        <TypeBackground
-          key={pokemonDetails?.types[0].type.name}
-          src={`assets/background/${pokemonDetails?.types[0].type.name}Bg.svg`}
-        ></TypeBackground>
-        <Image
-          className="card-image"
-          // onLoad={handleImageLoad}
-          // src={currentImage}
-          src={pokemonDetails?.sprites.other['official-artwork'].front_default}
-        ></Image>
-      </ImageHolder>
-      {/* Pokemon Information */}
-      <CardContent>
-        <Name>{pokemonDetails?.name}</Name>
-        <PokemonTypeHolder>
-          <Number># {pokemonDetails?.id}</Number>
-          {pokemonDetails?.types.map((item) => (
-            <TypeIcon
-              alt={item?.type?.name}
-              key={item?.type?.name}
-              src={`assets/${item.type.name}.svg`}
-            ></TypeIcon>
-          ))}
-        </PokemonTypeHolder>
-      </CardContent>
+    <CardContainer>
+      <Link style={{ width: '100%' }} to={`/pokemon/${id}`}>
+        <ImageHolder type={pokemonDetails?.types[0].type.name || 'gray'}>
+          <TypeBackground
+            key={pokemonDetails?.types[0].type.name}
+            src={`/assets/background/${pokemonDetails?.types[0].type.name}Bg.svg`}
+          ></TypeBackground>
+          <Image
+            className="card-image"
+            // onLoad={handleImageLoad}
+            // src={currentImage}
+            src={
+              pokemonDetails?.sprites.other['official-artwork'].front_default
+            }
+          ></Image>
+        </ImageHolder>
+        {/* Pokemon Information */}
+        <CardContent>
+          <Name>{pokemonDetails?.name}</Name>
+          <PokemonTypeHolder>
+            <Number># {pokemonDetails?.id}</Number>
+            {pokemonDetails?.types.map((item) => (
+              <TypeIcon
+                alt={item?.type?.name}
+                key={item?.type?.name}
+                src={`/assets/${item.type.name}.svg`}
+              ></TypeIcon>
+            ))}
+          </PokemonTypeHolder>
+        </CardContent>
+      </Link>
     </CardContainer>
   );
 };
+
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
 
 const Image = styled.img`
   width: 70%;
@@ -86,7 +85,7 @@ const Image = styled.img`
 
 //Styled Components
 const CardContainer = styled.div`
-  width: 15%;
+  width: 200px;
   display: flex;
   flex-direction: column;
   background-color: #fff;
@@ -97,21 +96,25 @@ const CardContainer = styled.div`
   overflow: hidden;
   color: ${(props) => props.theme.colors.text};
   transition: all.5s;
-  /* &:hover {
-    transform: translateY(-15px);
-    border-bottom: 2px solid ${(props) => props.theme.colors.cardBGC};
+  opacity: 0;
+  animation: ${fadeIn} 0.5s ease-in-out 1s forwards;
+  &:hover {
+    transform: translateY(-10px);
     transition: all.1s;
   }
   &:active {
-    transform: scale(0.9) translateY(-15px);
+    transform: scale(0.9);
     transition: all.1s;
   }
   &:hover ${Image} {
-    transform: scale(1.3);
-    filter: drop-shadow(0 0 2px ${(props) => props.theme.colors.dropShadow})
+    filter: drop-shadow(0 0 5px ${(props) => props.theme.colors.dropShadow})
       saturate(2);
     transition: ease-out 0.3s;
-  } */
+  }
+
+  @media only screen and (max-width: 800px) {
+    width: 200px;
+  }
 `;
 
 const ImageHolder = styled.div<{ type: PokemonType }>`
@@ -122,6 +125,7 @@ const ImageHolder = styled.div<{ type: PokemonType }>`
   justify-content: center;
   align-items: center;
   position: relative;
+
   background-color: ${({ theme, type }) =>
     theme.pokemonType[type] || '#919AA2'};
 `;

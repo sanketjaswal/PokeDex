@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 
-import { styled } from 'styled-components';
+import { keyframes, styled } from 'styled-components';
 
 import { ListPokemon, ListType, PokemonType } from '../models';
 import {
@@ -29,8 +29,6 @@ export const Home: React.FC = () => {
     try {
       const res = await fetchPokemons({ offset: 0, limit: 1303 });
       setAllPokemons(res?.results);
-      // showPokemons();
-      setPokemons(res?.results.slice(0, limit));
     } catch (error) {
       console.error('getAllPokemonList', error);
     }
@@ -105,7 +103,6 @@ export const Home: React.FC = () => {
   const getFilteredPokemons = async (f: ListPokemon) => {
     if (filter == f.name) {
       setFilter('');
-      // setPokemons(allPokemons.slice(0, limit));
       setFilteredList([]);
     } else {
       setFilter(f.name);
@@ -118,7 +115,7 @@ export const Home: React.FC = () => {
 
   useEffect(() => {
     showPokemons();
-  }, [showAll, filteredList, searchString]);
+  }, [showAll, filteredList, searchString, allPokemons]);
 
   return (
     <Container>
@@ -127,7 +124,7 @@ export const Home: React.FC = () => {
         <StyledInput
           type="text"
           id="helo"
-          placeholder="Search Pokémon by name"
+          placeholder="Search Pokémon"
           value={searchString}
           onChange={(e) => handleSearch(e.target.value)}
         />
@@ -137,20 +134,28 @@ export const Home: React.FC = () => {
         </ToogleContainer>
       </Form>
       <FilterHolder>
-        {types?.map((item) => (
-          <FilterButton
-            onClick={() => getFilteredPokemons(item)}
-            type={item.name}
-            key={item.name}
-            $active={filter == item.name}
-          >
-            <p>{item.name} </p>
-            <TypeIcon
-              alt={item?.name}
-              src={`assets/${item.name}.svg`}
-            ></TypeIcon>
-          </FilterButton>
-        ))}
+        {types?.map((item) =>
+          item.name == 'stellar' || item.name == 'unknown' ? (
+            ''
+          ) : (
+            <FilterButton
+              onClick={() => getFilteredPokemons(item)}
+              type={item.name}
+              key={item.name}
+              $active={filter == item.name}
+            >
+              <span>{item.name} </span>
+              <TypeIcon
+                alt={item?.name}
+                src={
+                  filter != item.name
+                    ? `assets/${item.name}.svg`
+                    : `assets/background/${item.name}Bg.svg`
+                }
+              ></TypeIcon>
+            </FilterButton>
+          ),
+        )}
       </FilterHolder>
       <PokimonHolder>
         {pokemons?.map((pokemon) => (
@@ -162,7 +167,9 @@ export const Home: React.FC = () => {
         ))}
         {searchString == '' && filter == '' && (
           <StyledButton onClick={getNextPageData}>
-            Show more Pokemons
+            Show
+            <img src="assets/pokeball.svg"></img>
+            More
           </StyledButton>
         )}
       </PokimonHolder>
@@ -198,14 +205,15 @@ const Form = styled.form`
   align-items: center;
   gap: 20px;
   width: 100%;
+  padding: 16px 0;
 `;
 
 export const StyledInput = styled.input`
-  width: 15%;
+  min-width: 200px;
+  min-height: 46px;
   padding: 10px;
-  margin: 10px 0;
   border: 0px;
-  border-radius: 4px;
+  border-radius: 8px;
   font-size: 16px;
   box-sizing: border-box;
   transition: border-color 0.3s ease;
@@ -216,54 +224,98 @@ export const StyledInput = styled.input`
   }
 `;
 
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
+
 // Styled Button
 export const StyledButton = styled.button`
-  background-color: #0099ff;
+  background: linear-gradient(black, transparent, #c6c6c6);
   color: white;
   padding: 10px 20px;
   border: none;
-  border-radius: 4px;
+  border-radius: 40%;
+  border-bottom: 2px solid white;
+  display: flex;
+  justify-content: space-evenly;
+  gap: 12px;
+  align-items: center;
   cursor: pointer;
   font-size: 16px;
-  transition: background-color 0.3s ease;
+  font-weight: 900;
+  transition: all 0.3s ease;
+  opacity: 0;
+  animation: ${fadeIn} 1s ease-in-out 3s forwards;
 
   &:hover {
-    background-color: #b32400;
+    transition: all.2s;
+    img {
+      transform: scale(2) translateY(8px);
+      transition: all.3s;
+    }
   }
 
   &:active {
-    background-color: #940000;
+    /* background-color: #cd3131; */
+    transition: all.1s;
+    /* color: white; */
+    img {
+      transform: scale(1) translateY(8px);
+      transition: all.4s;
+    }
+  }
+
+  img {
+    width: 30px;
+    transition: all.5s;
   }
 `;
 
 const FilterHolder = styled.div`
   width: 100%;
-  padding: 2% 20%;
+  padding: 2% 10%;
   display: flex;
   justify-content: center;
   color: white;
   flex-wrap: wrap;
-  gap: 20px;
-  /* background-color: red; */
+  gap: 16px;
+  @media only screen and (max-width: 800px) {
+    gap: 10px;
+    padding: 1% 6%;
+  }
 `;
 
 const FilterButton = styled.div<{ type: PokemonType; $active: boolean }>`
-  min-width: 30px;
+  /* min-width: 30px; */
   padding: 6px 12px;
-  border: 2px solid white;
-  border-radius: 6px;
+  border: 2px solid ${({ theme, type }) => theme.pokemonType[type]};
+  border-radius: 8px;
   display: flex;
   gap: 8px;
   justify-content: center;
   align-items: center;
+  transition: all.5s;
+  opacity: 0;
+  animation: ${fadeIn} 1s ease-in-out 0.5s forwards;
   background-color: ${({ theme, type, $active }) =>
-    $active ? theme.colors.secondary : 'transparent'};
-  p {
+    $active ? theme.pokemonType[type] : 'transparent'};
+  span {
     color: white;
-    margin: 0;
     text-transform: capitalize;
   }
   cursor: pointer;
+  &:hover {
+    transition: all.3s;
+    background-color: ${({ theme, type, $active }) =>
+      $active ? theme.pokemonType[type] : '#ffffff21'};
+  }
 `;
 
 const TypeIcon = styled.img`
@@ -274,13 +326,13 @@ const TypeIcon = styled.img`
 const ToogleContainer = styled.div`
   display: flex;
   flex-direction: column;
+  transform: scale(0.9);
   align-items: center;
-  gap: 5px;
-  padding-top: 20px;
+  gap: 2px;
 `;
 
-const ToggleText = styled.p`
+const ToggleText = styled.div`
   color: white;
-  margin: 0;
   text-transform: uppercase;
+  font-size: 14px;
 `;

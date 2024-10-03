@@ -14,7 +14,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/pokemonDetails" element={<PokemonDetails />} />
+        <Route path="/pokemon/:id" element={<PokemonDetails />} />
         <Route path="/details" element={<DetailsPage />} />
       </Routes>
     </ThemeProvider>

@@ -30,6 +30,8 @@ declare module 'styled-components' {
       steel: string;
       water: string;
       gray: string;
+      stellar: string;
+      unknown: string;
     };
   }
 }

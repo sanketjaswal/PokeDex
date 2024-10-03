@@ -87,7 +87,9 @@ export type PokemonType =
   | 'rock'
   | 'steel'
   | 'water'
-  | 'gray';
+  | 'gray'
+  | 'stellar'
+  | 'unknown';
 
 interface Type {
   slot: number;

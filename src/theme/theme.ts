@@ -29,6 +29,8 @@ export const theme: DefaultTheme = {
     steel: '#5A8EA2',
     water: '#5090D6',
     gray: 'gray',
+    stellar: 'gray',
+    unknown: 'gray',
   },
 };
 
@@ -60,5 +62,8 @@ export const darkTheme = {
     rock: '#C5B78C',
     steel: '#5A8EA2',
     water: '#5090D6',
+    gray: 'gray',
+    stellar: 'gray',
+    unknown: 'gray',
   },
 };
