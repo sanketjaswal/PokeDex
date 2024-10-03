@@ -35,7 +35,7 @@ export const PokemonCard: React.FC<ListPokemon> = ({ url }) => {
         <ImageHolder type={pokemonDetails?.types[0].type.name || 'gray'}>
           <TypeBackground
             key={pokemonDetails?.types[0].type.name}
-            src={`/assets/background/${pokemonDetails?.types[0].type.name}Bg.svg`}
+            src={`PokeDex/assets/background/${pokemonDetails?.types[0].type.name}Bg.svg`}
           ></TypeBackground>
           <Image
             className="card-image"
@@ -55,7 +55,7 @@ export const PokemonCard: React.FC<ListPokemon> = ({ url }) => {
               <TypeIcon
                 alt={item?.type?.name}
                 key={item?.type?.name}
-                src={`/assets/${item.type.name}.svg`}
+                src={`PokeDex/assets/${item.type.name}.svg`}
               ></TypeIcon>
             ))}
           </PokemonTypeHolder>
