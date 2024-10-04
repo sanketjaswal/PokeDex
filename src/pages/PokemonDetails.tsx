@@ -80,7 +80,7 @@ export const PokemonDetails: React.FC = () => {
                     <TypeIcon
                       alt={item?.type?.name}
                       key={item?.type?.name}
-                      src={`/assets/${item?.type?.name}.svg`}
+                      src={`assets/${item?.type?.name}.svg`}
                     ></TypeIcon>
                   ))}
                 </PokemonTypeHolder>
@@ -93,7 +93,7 @@ export const PokemonDetails: React.FC = () => {
           </InfoCard>
         </SubDetailsCard>
         <SubDetailsCard>
-          <CoverImage src={`/assets/background/${type}Bg.svg`}></CoverImage>
+          <CoverImage src={`assets/background/${type}Bg.svg`}></CoverImage>
           <Image
             src={pokemonDetails?.sprites.other.dream_world.front_default}
           ></Image>

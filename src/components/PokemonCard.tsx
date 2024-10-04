@@ -55,7 +55,7 @@ export const PokemonCard: React.FC<ListPokemon> = ({ url }) => {
               <TypeIcon
                 alt={item?.type?.name}
                 key={item?.type?.name}
-                src={`PokeDex/assets/${item.type.name}.svg`}
+                src={`assets/${item.type.name}.svg`}
               ></TypeIcon>
             ))}
           </PokemonTypeHolder>

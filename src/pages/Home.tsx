@@ -149,8 +149,8 @@ export const Home: React.FC = () => {
                 alt={item?.name}
                 src={
                   filter != item.name
-                    ? `PokeDex/assets/${item.name}.svg`
-                    : `PokeDex/assets/background/${item.name}Bg.svg`
+                    ? `assets/${item.name}.svg`
+                    : `assets/background/${item.name}Bg.svg`
                 }
               ></TypeIcon>
             </FilterButton>
