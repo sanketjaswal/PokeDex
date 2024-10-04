@@ -1,4 +1,4 @@
-name: Build and Test
+name: Sanity Checks
 
 on:
   pull_request:
@@ -8,6 +8,7 @@ on:
 jobs:
   # Job 1: Lint
   lint:
+    name: Lint
     runs-on: windows-latest
     steps:
       - name: Checkout code
@@ -23,6 +24,7 @@ jobs:
 
   # Job 2: Build
   build:
+    name: Build
     runs-on: windows-latest
     steps:
       - name: Checkout code
