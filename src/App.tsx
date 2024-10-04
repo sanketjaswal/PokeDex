@@ -6,7 +6,7 @@ import './App.css';
 
 import { theme } from './theme/theme';
 import { Home } from './pages/Home';
-import { DetailsPage } from './pages/Details';
+// import { DetailsPage } from './pages/Details';
 import { PokemonDetails } from './pages/PokemonDetails';
 
 function App() {
@@ -15,7 +15,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/pokemon/:id" element={<PokemonDetails />} />
-        <Route path="/details" element={<DetailsPage />} />
+        {/* <Route path="/details" element={<DetailsPage />} /> */}
       </Routes>
     </ThemeProvider>
   );
