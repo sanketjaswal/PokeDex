@@ -2,7 +2,7 @@
 
 PokeDex is an application built using React, designed to display Pokemon data, including details, with filtering, searching.
 
-### Start the server
+### Application Link
 
 ```shell
 https://sanketjaswal.github.io/PokeDex
