@@ -8,27 +8,27 @@ interface SliderProps {
   type?: PokemonType;
 }
 
-const maxStats = {
-  hp: 255,
-  attack: 190,
-  defense: 230,
-  'special-attack': 194,
-  'special-defense': 230,
-  speed: 180,
-};
-const calculatePercentage = (statName: string, value: number): number => {
-  const maxValue = maxStats[statName as keyof typeof maxStats];
-  return (value / maxValue) * 100;
+const MaxStats: Record<string, number> = {
+  HP: 255,
+  Attack: 190,
+  Defense: 230,
+  'Special Attack': 194,
+  'Special Defense': 230,
+  Speed: 180,
 };
 
-const RangeSlider: React.FC<SliderProps> = ({ name, value, type }) => {
+const RangeSlider: React.FC<SliderProps> = ({ name, value = 0, type }) => {
+  const calculatePer = () => {
+    return (value / MaxStats[name]) * 100;
+  };
+
   return (
     <Container>
       <DataName>{name}</DataName>
       <Slider>
         <RangeValue id="rangevalue">{value}</RangeValue>
         <OtherDiv>
-          <InnerDiv type={type || 'gray'} value={value || 50}></InnerDiv>
+          <InnerDiv type={type || 'gray'} value={calculatePer()}></InnerDiv>
         </OtherDiv>
       </Slider>
     </Container>

@@ -4,14 +4,11 @@ import { useParams } from 'react-router-dom';
 import { keyframes, styled } from 'styled-components';
 
 import { PokemonDetail, PokemonType } from '../models';
-import {
-  fetchEvolutionData,
-  fetchPokemonDetails,
-  fetchPokemonSpices,
-} from '../apis';
+import { fetchPokemonDetails, fetchPokemonSpices } from '../apis';
 // import { EvolutionChain } from '../models/evolutionData';
-import RangeSlider from '../components/rangeTab';
+// import RangeSlider from '../components/RangeTab';
 import { PokemonSpeciesData } from '../models/pokemonSpecies';
+import RangeSlider from '../components/RangeTab';
 
 export const PokemonDetails: React.FC = () => {
   const [pokemonDetails, setPokemonDetails] = useState<PokemonDetail | null>(
@@ -125,7 +122,7 @@ export const PokemonDetails: React.FC = () => {
               name={'HP'}
               value={
                 pokemonDetails?.stats.find((stat) => stat.stat.name === 'hp')
-                  ?.base_stat
+                  ?.base_stat || 50
               }
             />
             <RangeSlider
@@ -134,12 +131,12 @@ export const PokemonDetails: React.FC = () => {
               value={
                 pokemonDetails?.stats.find(
                   (stat) => stat.stat.name === 'attack',
-                )?.base_stat
+                )?.base_stat || 50
               }
             />
             <RangeSlider
               type={type}
-              name={'Defence'}
+              name={'Defense'}
               value={
                 pokemonDetails?.stats.find(
                   (stat) => stat.stat.name === 'defense',
@@ -165,7 +162,7 @@ export const PokemonDetails: React.FC = () => {
             />
             <RangeSlider
               type={type}
-              name={'Special Defence'}
+              name={'Special Defense'}
               value={
                 pokemonDetails?.stats.find(
                   (stat) => stat.stat.name === 'special-defense',

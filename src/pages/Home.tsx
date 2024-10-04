@@ -172,7 +172,7 @@ export const Home: React.FC = () => {
         {searchString == '' && filter == '' && (
           <StyledButton onClick={getNextPageData}>
             Show
-            <img src="/assets/pokeball.svg"></img>
+            <img src="assets/pokeball.svg"></img>
             More
           </StyledButton>
         )}
@@ -210,7 +210,7 @@ const PokimonHolder = styled.div`
   display: flex;
   flex: 1;
   flex-wrap: wrap;
-  justify-content: space-evenly;
+  justify-content: center;
   padding: 4% 5%;
   gap: 16px;
   opacity: 0;
@@ -232,6 +232,7 @@ export const StyledInput = styled.input`
   min-width: 200px;
   min-height: 46px;
   padding: 10px;
+  padding-left: 16px;
   border: 0px;
   border-radius: 8px;
   font-size: 16px;
