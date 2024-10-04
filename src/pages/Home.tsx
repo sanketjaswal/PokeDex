@@ -13,6 +13,7 @@ import {
 import { PokemonCard } from '../components/PokemonCard';
 import { ToggleButton } from '../components/ToggleButton';
 import { Loader } from '../components/Loader';
+import { Header } from '../components/Header';
 
 export const Home: React.FC = () => {
   const [searchString, setSearchString] = useState<string>('');
@@ -121,6 +122,7 @@ export const Home: React.FC = () => {
   return (
     <Container>
       {/* <ThemeToggle /> */}
+      <Header></Header>
       <Form>
         <StyledInput
           type="text"
@@ -134,7 +136,7 @@ export const Home: React.FC = () => {
           <ToggleText>{showAll ? 'Classic ' : 'All'}</ToggleText>
         </ToogleContainer>
       </Form>
-      <Loader></Loader>
+      {/* <Loader></Loader> */}
       <FilterHolder>
         {types?.map((item) =>
           item.name == 'stellar' || item.name == 'unknown' ? (
@@ -151,8 +153,8 @@ export const Home: React.FC = () => {
                 alt={item?.name}
                 src={
                   filter != item.name
-                    ? `assets/${item.name}.svg`
-                    : `assets/background/${item.name}Bg.svg`
+                    ? `/assets/${item.name}.svg`
+                    : `/assets/background/${item.name}Bg.svg`
                 }
               ></TypeIcon>
             </FilterButton>
@@ -170,7 +172,7 @@ export const Home: React.FC = () => {
         {searchString == '' && filter == '' && (
           <StyledButton onClick={getNextPageData}>
             Show
-            <img src="assets/pokeball.svg"></img>
+            <img src="/assets/pokeball.svg"></img>
             More
           </StyledButton>
         )}
@@ -180,6 +182,18 @@ export const Home: React.FC = () => {
 };
 
 //Styled Components
+
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
+
 const Container = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -199,6 +213,10 @@ const PokimonHolder = styled.div`
   justify-content: space-evenly;
   padding: 4% 5%;
   gap: 16px;
+  opacity: 0;
+  animation: ${fadeIn} 0.3s ease-in-out 1s forwards;
+  position: relative;
+  padding-bottom: 130px;
 `;
 
 const Form = styled.form`
@@ -218,6 +236,8 @@ export const StyledInput = styled.input`
   border-radius: 8px;
   font-size: 16px;
   box-sizing: border-box;
+  font-family: 'Quicksand book', sans-serif;
+
   transition: border-color 0.3s ease;
 
   &:focus {
@@ -226,22 +246,11 @@ export const StyledInput = styled.input`
   }
 `;
 
-const fadeIn = keyframes`
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-`;
-
 // Styled Button
 export const StyledButton = styled.button`
-  background: linear-gradient(black, transparent, #c6c6c6);
+  background: linear-gradient(transparent, transparent, #c6c6c6);
   color: white;
-  padding: 10px 20px;
+  padding: 10px 50px;
   border: none;
   border-radius: 40%;
   border-bottom: 2px solid white;
@@ -254,12 +263,14 @@ export const StyledButton = styled.button`
   font-weight: 900;
   transition: all 0.3s ease;
   opacity: 0;
+  position: absolute;
+  bottom: 30px;
   animation: ${fadeIn} 1s ease-in-out 3s forwards;
 
   &:hover {
     transition: all.2s;
     img {
-      transform: scale(2) translateY(8px);
+      transform: scale(1.4) translateY(0px);
       transition: all.3s;
     }
   }
@@ -269,7 +280,7 @@ export const StyledButton = styled.button`
     transition: all.1s;
     /* color: white; */
     img {
-      transform: scale(1) translateY(8px);
+      transform: scale(1) translateY(0px);
       transition: all.4s;
     }
   }
@@ -305,6 +316,7 @@ const FilterButton = styled.div<{ type: PokemonType; $active: boolean }>`
   align-items: center;
   transition: all.5s;
   opacity: 0;
+  font-family: 'Quicksand Bold', sans-serif;
   animation: ${fadeIn} 1s ease-in-out 0.5s forwards;
   background-color: ${({ theme, type, $active }) =>
     $active ? theme.pokemonType[type] : 'transparent'};
@@ -335,6 +347,8 @@ const ToogleContainer = styled.div`
 
 const ToggleText = styled.div`
   color: white;
+  font-family: 'Quicksand Book', sans-serif;
+
   text-transform: uppercase;
   font-size: 14px;
 `;

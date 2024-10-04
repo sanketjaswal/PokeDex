@@ -15,7 +15,7 @@ export const ToggleButton: React.FC<ToggleProps> = ({ setValue, value }) => {
   return (
     <ToggleContainer>
       <HiddenCheckbox type="checkbox" checked={value} onChange={handleToggle} />
-      <Slider checked={value} imag="assets/pokeball.svg">
+      <Slider checked={value} imag="/assets/pokeball.svg">
         {/* <SliderIcon src="assets/pokeball.svg" alt="pokeball icon" /> */}
       </Slider>
     </ToggleContainer>
@@ -27,6 +27,8 @@ const ToggleContainer = styled.label`
   display: inline-block;
   width: 60px;
   height: 30px;
+  font-family: 'Quicksand Book', sans-serif;
+
   transform: scale(0.9);
 `;
 

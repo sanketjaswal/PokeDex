@@ -34,9 +34,9 @@ export const PokemonCard: React.FC<ListPokemon> = ({ url }) => {
     return <Loader></Loader>;
   }
   return (
-    <CardContainer>
+    <CardContainer type={pokemonDetails?.types[0].type.name || 'gray'}>
       <StyledLink
-        type={pokemonDetails?.types[0].type.name || 'gray'}
+        type={pokemonDetails?.types[0].type.name}
         to={`/pokemon/${id}`}
       >
         <ImageHolder type={pokemonDetails?.types[0].type.name || 'gray'}>
@@ -84,11 +84,50 @@ const fadeIn = keyframes`
   }
 `;
 
+const textFadeIn = keyframes`
+  from {
+    opacity: 0.3;
+  }
+  to {
+    opacity: 1;
+  }
+`;
+
+const float = keyframes`
+  0% {
+    transform: translateY(25%);
+  }
+  50% {
+    transform: translateY(22%);
+  }
+  100% {
+    transform: translateY(25%);
+  }
+`;
+
+const shake = keyframes`
+  0% { 
+    opacity: 1;
+    transform: translate(1px, 1px) rotate(0deg); }
+  
+
+  
+  50% { 
+    opacity:1;
+    transform: translate(-2px, 1px) scale(1.01) rotate(1deg); }
+ 
+  
+  100% { 
+    opacity:1;
+    transform: translate(0px, 0px) rotate(-1deg); }
+`;
+
 const Image = styled.img`
   width: 70%;
   transition: all.8s;
   z-index: 1;
   transform: translateY(25%);
+
   @media only screen and (max-width: 465px) {
     width: 80%;
   }
@@ -100,7 +139,8 @@ const Name = styled.p`
   text-align: center;
   text-transform: capitalize;
   transition: all.3s;
-  font-family: 'Pokemon Hollow', sans-serif;
+  font-family: 'Quicksand Bold', sans-serif;
+  font-weight: 200;
   @media only screen and (max-width: 465px) {
     background-color: #fff;
     width: 100%;
@@ -108,36 +148,43 @@ const Name = styled.p`
   }
 `;
 
-const CardContainer = styled.div`
+const CardContainer = styled.div<{ type: PokemonType }>`
   width: 200px;
   display: flex;
   flex-direction: column;
   background-color: white;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: center;
   cursor: pointer;
   border-radius: 14px;
   overflow: hidden;
   color: ${(props) => props.theme.colors.text};
   transition: all.5s;
-  opacity: 0;
-  animation: ${fadeIn} 0.3s ease-in-out 1s forwards;
+
+  /* animation: ${fadeIn} 0.3s ease-in-out 1s forwards; */
   &:hover {
-    transform: translateY(-10px);
+    animation: ${shake} 0.2s ease-in-out;
+    animation-iteration-count: 1;
     transition: all.1s;
+    box-shadow: 3px 4px 3px 0px
+      ${({ theme, type }) => theme.pokemonType[type] || 'black'};
   }
+
   &:active {
     transform: scale(0.9);
     transition: all.1s;
   }
   &:hover ${Image} {
-    filter: drop-shadow(0 0 5px ${(props) => props.theme.colors.dropShadow})
-      saturate(2);
+    filter: drop-shadow(0 0 1.5px ${(props) => props.theme.colors.dropShadow})
+      saturate(1.5);
     transition: ease-out 0.3s;
+    animation: ${float} 3s ease-in-out infinite;
   }
 
   &:hover ${Name} {
-    font-family: 'Pokemon Solid', sans-serif;
+    /* font-family: 'Pokemon Solid', sans-serif; */
+    animation: ${textFadeIn} 1s;
+
     /* transition: 0.5s; */
   }
 
@@ -154,7 +201,9 @@ const StyledLink = styled(Link)<{ type: PokemonType }>`
   width: 100%;
   text-decoration: none;
   color: inherit;
-
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   &:hover {
     text-shadow: 0 0 5px white;
     color: ${({ theme, type }) => theme.pokemonType[type] || 'black'};
@@ -179,7 +228,8 @@ const ImageHolder = styled.div<{ type: PokemonType }>`
 
 const CardContent = styled.div`
   padding: 8px;
-  padding-top: 10px;
+  padding-top: 30px;
+  /* background-color: red; */
   align-self: stretch;
   display: flex;
   align-items: stretch;

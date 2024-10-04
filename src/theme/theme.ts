@@ -4,7 +4,7 @@ export const theme: DefaultTheme = {
   colors: {
     primary: 'black',
     secondary: 'green',
-    background: 'black',
+    background: '#2e2a2c',
     text: '#313131',
     cardBGC: '#cfecf0',
     dropShadow: 'black',

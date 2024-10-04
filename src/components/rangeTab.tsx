@@ -1,19 +1,34 @@
 import React from 'react';
 import { styled, keyframes } from 'styled-components';
+import { PokemonType } from '../models';
 
 interface SliderProps {
   name: string;
-  value: number;
+  value?: number;
+  type?: PokemonType;
 }
 
-const RangeSlider: React.FC<SliderProps> = ({ name, value }) => {
+const maxStats = {
+  hp: 255,
+  attack: 190,
+  defense: 230,
+  'special-attack': 194,
+  'special-defense': 230,
+  speed: 180,
+};
+const calculatePercentage = (statName: string, value: number): number => {
+  const maxValue = maxStats[statName as keyof typeof maxStats];
+  return (value / maxValue) * 100;
+};
+
+const RangeSlider: React.FC<SliderProps> = ({ name, value, type }) => {
   return (
     <Container>
       <DataName>{name}</DataName>
       <Slider>
         <RangeValue id="rangevalue">{value}</RangeValue>
         <OtherDiv>
-          <InnerDiv value={value}></InnerDiv>
+          <InnerDiv type={type || 'gray'} value={value || 50}></InnerDiv>
         </OtherDiv>
       </Slider>
     </Container>
@@ -33,55 +48,58 @@ const slideIn = keyframes`
 `;
 
 const Container = styled.div`
+  width: 45%;
   display: flex;
-  justify-content: center;
-  width: 90%;
-  margin: 0;
-  position: relative;
-  text-align: center;
-`;
+  flex-direction: column;
+  margin: 10px 0;
 
-const Slider = styled.div`
-  display: flex;
-  align-items: center;
-  width: 70%;
-  margin: 0 auto;
-`;
-
-const OtherDiv = styled.div`
-  width: 100%;
-  height: 40%;
-  border-radius: 10px;
-  overflow: hidden;
-  background-color: rgb(255, 255, 255);
-  border: 1px solid white;
-  position: relative;
-  transition: background-color 0.3s ease;
-  &:hover {
-    background-color: rgba(235, 235, 235, 0.886);
+  @media only screen and (max-width: 1200px) {
+    width: 45%;
+  }
+  @media only screen and (max-width: 550px) {
+    width: 90%;
+    margin: 5px 0;
   }
 `;
 
-const InnerDiv = styled.div<{ value: number }>`
-  width: ${({ value }) => value}%;
-  height: 100%;
-  background-color: #63bc5a;
-  border-right: 1px solid white;
-  animation: ${slideIn} 0.3s ease forwards;
-  transition: width 0.3s ease;
+const DataName = styled.div`
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 5px;
+  color: #333;
+  font-family: 'Quicksand bold', sans-serif;
+`;
+
+const Slider = styled.div`
+  /* width: 300px; */
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
 `;
 
 const RangeValue = styled.div`
-  text-align: center;
-  font-family: 'Quantico', sans-serif;
-  font-size: 18px;
-  min-width: 50px;
-  transition: color 0.3s ease;
+  font-size: 14px;
+  color: #666;
+  width: 40px;
+  text-align: right;
+  font-family: 'Quicksand Book', sans-serif;
 `;
 
-const DataName = styled.div`
-  width: 200px;
-  color: white;
-  font-size: 20px;
-  text-align: end;
+const OtherDiv = styled.div`
+  position: relative;
+  background-color: #ccc;
+  height: 6px;
+  flex-grow: 1;
+  border-radius: 3px;
+  overflow: hidden;
+`;
+
+const InnerDiv = styled.div<{ value: number; type: PokemonType }>`
+  background-color: ${(props) => props.theme.pokemonType[props.type] || 'gray'};
+  height: 100%;
+  width: ${({ value }) => value}%;
+  transition: width 0.3s ease;
+  border-radius: 3px;
+  animation: ${slideIn} 1s ease;
 `;
