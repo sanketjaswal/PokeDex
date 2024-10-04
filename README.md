@@ -1,4 +1,4 @@
-# Pokedex Application
+# Pokedex
 
 PokeDex is an application built using React, designed to display Pokemon data, including details, with filtering, searching.
 
