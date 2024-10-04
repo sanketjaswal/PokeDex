@@ -6,4 +6,4 @@ const instance = Axios.create({
   timeout: 2000,
   headers: { 'Content-Type': 'application/json' },
 });
-export const api = setupCache(instance);
+export const api = instance; // setupCache(instance);

@@ -12,6 +12,7 @@ import {
 // import { ThemeToggle } from '../components/ThemeBtn';
 import { PokemonCard } from '../components/PokemonCard';
 import { ToggleButton } from '../components/ToggleButton';
+import { Loader } from '../components/Loader';
 
 export const Home: React.FC = () => {
   const [searchString, setSearchString] = useState<string>('');
@@ -133,6 +134,7 @@ export const Home: React.FC = () => {
           <ToggleText>{showAll ? 'Classic ' : 'All'}</ToggleText>
         </ToogleContainer>
       </Form>
+      {/* <Loader></Loader> */}
       <FilterHolder>
         {types?.map((item) =>
           item.name == 'stellar' || item.name == 'unknown' ? (

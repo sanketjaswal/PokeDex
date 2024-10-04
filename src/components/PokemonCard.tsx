@@ -6,6 +6,7 @@ import { keyframes, styled } from 'styled-components';
 import { fetchPokemonDetails } from '../apis';
 import { PokemonDetail, ListPokemon, PokemonType } from '../models';
 import { Link } from 'react-router-dom';
+import { Loader } from './Loader';
 
 export const PokemonCard: React.FC<ListPokemon> = ({ url }) => {
   const [pokemonDetails, setPokemonDetails] = useState<PokemonDetail | null>(
@@ -29,13 +30,19 @@ export const PokemonCard: React.FC<ListPokemon> = ({ url }) => {
     getPokemonDetails(url.split('/')[6]);
   }, []);
 
+  if (!pokemonDetails) {
+    return <Loader></Loader>;
+  }
   return (
     <CardContainer>
-      <Link style={{ width: '100%' }} to={`/pokemon/${id}`}>
+      <StyledLink
+        type={pokemonDetails?.types[0].type.name || 'gray'}
+        to={`/pokemon/${id}`}
+      >
         <ImageHolder type={pokemonDetails?.types[0].type.name || 'gray'}>
           <TypeBackground
             key={pokemonDetails?.types[0].type.name}
-            src={`assets/background/${pokemonDetails?.types[0].type.name}Bg.svg`}
+            src={`/assets/background/${pokemonDetails?.types[0].type.name}Bg.svg`}
           ></TypeBackground>
           <Image
             className="card-image"
@@ -55,12 +62,12 @@ export const PokemonCard: React.FC<ListPokemon> = ({ url }) => {
               <TypeIcon
                 alt={item?.type?.name}
                 key={item?.type?.name}
-                src={`assets/${item.type.name}.svg`}
+                src={`/assets/${item.type.name}.svg`}
               ></TypeIcon>
             ))}
           </PokemonTypeHolder>
         </CardContent>
-      </Link>
+      </StyledLink>
     </CardContainer>
   );
 };
@@ -81,6 +88,9 @@ const Image = styled.img`
   transition: all.8s;
   z-index: 1;
   transform: translateY(25%);
+  @media only screen and (max-width: 465px) {
+    width: 80%;
+  }
 `;
 
 //Styled Components
@@ -88,7 +98,7 @@ const CardContainer = styled.div`
   width: 200px;
   display: flex;
   flex-direction: column;
-  background-color: #fff;
+  background-color: white;
   justify-content: space-evenly;
   align-items: center;
   cursor: pointer;
@@ -97,7 +107,7 @@ const CardContainer = styled.div`
   color: ${(props) => props.theme.colors.text};
   transition: all.5s;
   opacity: 0;
-  animation: ${fadeIn} 0.5s ease-in-out 1s forwards;
+  animation: ${fadeIn} 0.3s ease-in-out 1s forwards;
   &:hover {
     transform: translateY(-10px);
     transition: all.1s;
@@ -115,6 +125,21 @@ const CardContainer = styled.div`
   @media only screen and (max-width: 800px) {
     width: 200px;
   }
+  @media only screen and (max-width: 465px) {
+    width: 40%;
+    justify-content: center;
+  }
+`;
+
+const StyledLink = styled(Link)<{ type: PokemonType }>`
+  width: 100%;
+  text-decoration: none;
+  color: inherit;
+
+  &:hover {
+    text-shadow: 0 0 5px white;
+    color: ${({ theme, type }) => theme.pokemonType[type] || 'black'};
+  }
 `;
 
 const ImageHolder = styled.div<{ type: PokemonType }>`
@@ -125,14 +150,17 @@ const ImageHolder = styled.div<{ type: PokemonType }>`
   justify-content: center;
   align-items: center;
   position: relative;
-
   background-color: ${({ theme, type }) =>
     theme.pokemonType[type] || '#919AA2'};
+
+  @media only screen and (max-width: 465px) {
+    height: 130px;
+  }
 `;
 
 const CardContent = styled.div`
   padding: 8px;
-  padding-top: 24px;
+  padding-top: 10px;
   align-self: stretch;
   display: flex;
   align-items: stretch;
@@ -145,8 +173,15 @@ const Name = styled.h2`
   font-size: 20px;
   font-weight: bold;
   margin: 0;
+  text-align: center;
   text-transform: capitalize;
   font-family: 'Pokemon Hollow', sans-serif;
+  @media only screen and (max-width: 465px) {
+    background-color: #fff;
+    width: 100%;
+    text-align: center;
+    /* justify-content: center; */
+  }
 `;
 
 const Number = styled.div`
