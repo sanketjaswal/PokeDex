@@ -10,8 +10,8 @@ jobs:
   lockfile_changes:
     name: Lockfile Changes
     runs-on: ubuntu-latest
-    permissions:
-      pull-requests: write
+    # permissions:
+    #   pull-requests: write
     steps:
       - name: Checkout
         uses: actions/checkout@v3
