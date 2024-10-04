@@ -6,7 +6,7 @@ import { keyframes, styled } from 'styled-components';
 import { PokemonDetail, PokemonType } from '../models';
 import { fetchPokemonDetails, fetchPokemonSpices } from '../apis';
 import { PokemonSpeciesData } from '../models/pokemonSpecies';
-import RangeSlider from '../components/RangeTab123';
+import RangeSlider from '../components/RangeTab';
 
 export const PokemonDetails: React.FC = () => {
   const [pokemonDetails, setPokemonDetails] = useState<PokemonDetail | null>(
