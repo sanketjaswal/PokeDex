@@ -1,9 +1,3 @@
-/*!
- * Axios Cache Interceptor 1.6.0
- * (c) 2021-present Arthur Fiorette & Contributors
- * Released under the MIT License.
- */
-
 /**
  * @license React
  * react-dom.production.min.js
