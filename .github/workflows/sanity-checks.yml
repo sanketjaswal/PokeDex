@@ -15,12 +15,10 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install dependencies
-        run: |
-          npm install
+        run: npm install
 
       - name: Run ESLint
-        run: |
-          npm run lint
+        run: npm run lint
 
   # Job 2: Build
   build:
@@ -31,9 +29,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install dependencies
-        run: |
-          npm install
+        run: npm install
 
       - name: Run build
-        run: |
-          npm run build
+        run: npm run build
