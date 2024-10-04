@@ -4,8 +4,8 @@ import { keyframes, styled } from 'styled-components';
 export const Loader = () => {
   return (
     <LoaderContainer>
-      <Loading src="assets/Loader.svg"></Loading>
-      <LoadPokeball src="assets/Pokeball.svg"></LoadPokeball>
+      <Loading src="assets/loader.svg"></Loading>
+      <LoadPokeball src="assets/pokeball.svg"></LoadPokeball>
     </LoaderContainer>
   );
 };

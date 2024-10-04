@@ -8,6 +8,7 @@ import {
   PokemonDetail,
   TypeResponse,
 } from '../models';
+import { PokemonSpeciesData } from '../models/pokemonSpecies';
 
 interface PaginationProps {
   offset: number;
@@ -31,6 +32,11 @@ export const fetchPokemonDetails = async (PokemonId: string) => {
 //fetch filtered Pokemon List
 export const fetchFilteredPokeList = async (givenUrl: string) => {
   const res = await axios.get<TypeResponse>(givenUrl);
+  return res?.data;
+};
+
+export const fetchPokemonSpices = async (name: string) => {
+  const res = await api.get<PokemonSpeciesData>(`pokemon-species/${name}`);
   return res?.data;
 };
 

@@ -4,30 +4,36 @@ import { useParams } from 'react-router-dom';
 import { keyframes, styled } from 'styled-components';
 
 import { PokemonDetail, PokemonType } from '../models';
-import { fetchEvolutionData, fetchPokemonDetails } from '../apis';
-// import { EvolutionChain } from '../models/evolutionData';
-import RangeSlider from '../components/rangeTab';
+import { fetchPokemonDetails, fetchPokemonSpices } from '../apis';
+import { PokemonSpeciesData } from '../models/pokemonSpecies';
+import RangeSlider from '../components/RangeTab';
 
 export const PokemonDetails: React.FC = () => {
   const [pokemonDetails, setPokemonDetails] = useState<PokemonDetail | null>(
     null,
   );
-  // const [evolutionChain, setEvolutionChain] = useState<EvolutionChain>();
+  const [speciesData, setSpeciesData] = useState<PokemonSpeciesData | null>(
+    null,
+  );
   const [type, setType] = useState<PokemonType | undefined>();
-  // const [evolutionArr, setEvolutionArr] = useState<any[]>([]);
 
   const { id } = useParams<string>();
+
+  const getDescription = () => {
+    return speciesData?.flavor_text_entries.find(
+      (entry) => entry.language.name === 'en',
+    )?.flavor_text;
+  };
 
   //Single Pokemon details API call
   const getPokemonDetails = async () => {
     if (id) {
       const res = await fetchPokemonDetails(id);
       setPokemonDetails(res);
-
       setType(res.types[0].type.name);
-      console.log(res);
-      const evoChain = await fetchEvolutionData(res.name);
-      console.log(evoChain.chain);
+      const spices = await fetchPokemonSpices(res.name);
+      setSpeciesData(spices);
+      console.log('PokemonSpeciesData', spices);
     } else {
       console.log('id not found');
     }
@@ -37,26 +43,9 @@ export const PokemonDetails: React.FC = () => {
     getPokemonDetails();
   }, []);
 
-  // Recursively render the evolution chain
-  // const getEvolutionChain = (chain: EvolutionChain['chain'] | undefined) => {
-  //   const chainArray: any[] = [];
-
-  //   chainArray.push({
-  //     name: chain.species.name,
-  //     id: chain.species.url.split('/').slice(-2, -1)[0],
-  //     url: chain.species.url,
-  //   });
-
-  //   if (chain.evolves_to.length > 0) {
-  //     chain.evolves_to.forEach((evolution) => getEvolutionChain(evolution));
-  //   }
-
-  //   setEvolutionArr(chainArray);
-  // };
-
   return (
-    <Container type={type || 'gray'}>
-      <DetailsCard>
+    <Container>
+      <DetailsCard type={type || 'gray'}>
         <SubDetailsCard>
           <FadedImageHolder>
             <FadeOne
@@ -65,7 +54,7 @@ export const PokemonDetails: React.FC = () => {
               }
             ></FadeOne>
           </FadedImageHolder>
-          <Title>{pokemonDetails?.name}</Title>
+          <Title type={type || 'gray'}>{pokemonDetails?.name}</Title>
           <InfoCard>
             <InfoDivider>
               <InfoCardImage
@@ -85,10 +74,7 @@ export const PokemonDetails: React.FC = () => {
                   ))}
                 </PokemonTypeHolder>
               </InfoCardHead>
-              <InfoCardDetails>
-                The plant blooms when it is absorbing solar energy. It stays on
-                the move to seek sunlight.
-              </InfoCardDetails>
+              <InfoCardDetails>{getDescription()}</InfoCardDetails>
             </InfoDivider>
           </InfoCard>
         </SubDetailsCard>
@@ -99,18 +85,9 @@ export const PokemonDetails: React.FC = () => {
           ></Image>
         </SubDetailsCard>
       </DetailsCard>
-      <MoreDetails>
-        <Heading>Profile</Heading>
+      <MoreDetails type={type || 'gray'}>
+        {/* <Heading>Profile</Heading> */}
         <MoreDetailsContainer>
-          <AbilityHolder>
-            <AbilityHeading>Ability</AbilityHeading>
-            <ul>
-              {pokemonDetails?.abilities.map((item) => (
-                <ULItem key={item.ability.name}>{item.ability.name}</ULItem>
-              ))}
-            </ul>
-          </AbilityHolder>
-
           <AbilityHolder>
             <InfoData>
               <StatKey>Introduced</StatKey>
@@ -122,11 +99,11 @@ export const PokemonDetails: React.FC = () => {
             </InfoData>
             <InfoData>
               <StatKey>Weight</StatKey>
-              <StatValue>6.4 kg (14.1 lbs)</StatValue>
+              <StatValue>{pokemonDetails?.weight} </StatValue>
             </InfoData>
             <InfoData>
               <StatKey>Height</StatKey>
-              <StatValue>1 m</StatValue>
+              <StatValue>{pokemonDetails?.height} </StatValue>
             </InfoData>
             <InfoData>
               <StatKey>Shape</StatKey>
@@ -137,57 +114,63 @@ export const PokemonDetails: React.FC = () => {
               <StatValue>Green</StatValue>
             </InfoData>
           </AbilityHolder>
+          <AbilityHolder>
+            <RangeSlider
+              type={type}
+              name={'HP'}
+              value={
+                pokemonDetails?.stats.find((stat) => stat.stat.name === 'hp')
+                  ?.base_stat || 50
+              }
+            />
+            <RangeSlider
+              type={type}
+              name={'Attack'}
+              value={
+                pokemonDetails?.stats.find(
+                  (stat) => stat.stat.name === 'attack',
+                )?.base_stat || 50
+              }
+            />
+            <RangeSlider
+              type={type}
+              name={'Defense'}
+              value={
+                pokemonDetails?.stats.find(
+                  (stat) => stat.stat.name === 'defense',
+                )?.base_stat
+              }
+            />
+            <RangeSlider
+              type={type}
+              name={'Speed'}
+              value={
+                pokemonDetails?.stats.find((stat) => stat.stat.name === 'speed')
+                  ?.base_stat
+              }
+            />
+            <RangeSlider
+              type={type}
+              name={'Special Attack'}
+              value={
+                pokemonDetails?.stats.find(
+                  (stat) => stat.stat.name === 'special-attack',
+                )?.base_stat
+              }
+            />
+            <RangeSlider
+              type={type}
+              name={'Special Defense'}
+              value={
+                pokemonDetails?.stats.find(
+                  (stat) => stat.stat.name === 'special-defense',
+                )?.base_stat
+              }
+            />
+          </AbilityHolder>
         </MoreDetailsContainer>
 
-        <Heading>Base Stats</Heading>
-        <RangeContainer>
-          <RangeSlider name={'HP'} value={80} />
-          <RangeSlider name={'Attack'} value={20} />
-          <RangeSlider name={'Defence'} value={30} />
-          <RangeSlider name={'Speed'} value={600} />
-          <RangeSlider name={'Special Attack'} value={50} />
-          <RangeSlider name={'Special Defence'} value={40} />
-        </RangeContainer>
-
-        <Heading>Evolution</Heading>
-        <EvolutionContainer>
-          <EvolutionCard>
-            <EvolutionImage
-              src={
-                pokemonDetails?.sprites.other['official-artwork'].front_default
-              }
-            ></EvolutionImage>
-          </EvolutionCard>
-          <EvolutionCard>
-            <EvolutionImage
-              src={
-                pokemonDetails?.sprites.other['official-artwork'].front_default
-              }
-            ></EvolutionImage>
-          </EvolutionCard>
-          <EvolutionCard>
-            <EvolutionImage
-              src={
-                pokemonDetails?.sprites.other['official-artwork'].front_default
-              }
-            ></EvolutionImage>
-          </EvolutionCard>
-        </EvolutionContainer>
-        {/* {evolutionChain ? (
-          <div>
-            {.map((evolution, index) => (
-              <div key={index}>
-                <p>
-                  Name: {evolution.name} <br />
-                  ID: {evolution.id} <br />
-                  URL: <a href={evolution.url}>{evolution.url}</a>
-                </p>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <p>Loading...</p>
-        )} */}
+        {/* <Heading>Base Stats</Heading> */}
       </MoreDetails>
     </Container>
   );
@@ -206,10 +189,23 @@ const fadeIn = keyframes`
   }
 `;
 
-const Container = styled.div<{ type: PokemonType }>`
+const float = keyframes`
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+`;
+
+const Container = styled.div`
   width: 100vw;
   min-height: 100vh;
-  background-color: ${(props) => props.theme.pokemonType[props.type] || 'gray'};
+
+  background-color: ${(props) => props.theme.colors.background};
   display: flex;
   gap: 50px;
   flex-direction: column;
@@ -218,21 +214,21 @@ const Container = styled.div<{ type: PokemonType }>`
   padding-block: 35px;
 `;
 
-const DetailsCard = styled.div`
+const DetailsCard = styled.div<{ type: PokemonType }>`
   width: 92%;
   height: 90vh;
   display: flex;
+  overflow: hidden;
+
   justify-content: center;
   align-items: center;
-  border: 3px solid #ffffff;
+  background-color: ${(props) => props.theme.pokemonType[props.type] || 'gray'};
+  box-shadow: -5px 2px 10px 0px #000000c3;
   border-radius: 40px;
   animation: ${fadeIn} 0.5s ease-in-out 1s forwards;
   opacity: 0;
-  background: radial-gradient(#ffffff67, transparent);
   @media only screen and (max-width: 1200px) {
-    /* flex-direction: column-reverse; */
     height: 60vh;
-    /* background-color: green; */
   }
   @media only screen and (max-width: 800px) {
     flex-direction: column-reverse;
@@ -240,7 +236,7 @@ const DetailsCard = styled.div`
   }
   @media only screen and (max-width: 480px) {
     flex-direction: column-reverse;
-    height: 80vh;
+    height: 90vh;
   }
 `;
 
@@ -254,15 +250,7 @@ const SubDetailsCard = styled.div`
   /* border: 2px solid blue; */
 
   @media only screen and (max-width: 800px) {
-    width: 70%;
-    flex-direction: column;
-  }
-  @media only screen and (max-width: 600px) {
-    width: 90%;
-    flex-direction: column;
-  }
-  @media only screen and (max-width: 480px) {
-    width: 100%;
+    width: 92%;
     flex-direction: column;
   }
 `;
@@ -275,32 +263,46 @@ const FadedImageHolder = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: #fff;
+  border-top-right-radius: 50%;
+  border-bottom-right-radius: 50%;
+  box-shadow: 0 0 10px black;
+  @media only screen and (max-width: 800px) {
+    border-radius: 0;
+    border-top-right-radius: 50%;
+    border-top-left-radius: 50%;
+  }
+  @media only screen and (max-width: 480px) {
+  }
 `;
 
 const FadeOne = styled.img`
   width: 60%;
-  opacity: 0.5;
-  filter: blur(2px);
-
+  opacity: 0;
+  filter: blur(1px);
   position: absolute;
 `;
 
-const Title = styled.h1`
+const Title = styled.p<{ type: PokemonType }>`
   font-size: 70px;
   padding: 0;
   margin: 0;
   position: absolute;
-  top: 20%;
+  top: 10%;
+  color: ${(props) => props.theme.pokemonType[props.type]};
   text-transform: capitalize;
-  /* font-family: 'Pokemon Hollow', sans-serif; */
-  word-spacing: 5px;
   font-family: 'Pokemon Hollow', sans-serif;
+  word-spacing: 5px;
   @media only screen and (max-width: 1200px) {
     top: 5%;
     font-size: 50px;
   }
   @media only screen and (max-width: 800px) {
-    top: -10%;
+    top: -5%;
+  }
+
+  @media only screen and (max-width: 450px) {
+    top: 0%;
   }
 `;
 
@@ -309,13 +311,16 @@ const CoverImage = styled.img`
   height: 70%;
   position: absolute;
   filter: blur(1px);
+  /* background-color: #fff; */
 `;
 
 const Image = styled.img`
   width: 350px;
   z-index: 1;
+  animation: ${float} 4s ease-in-out infinite;
   @media only screen and (max-width: 1200px) {
     width: 280px;
+    /* top: 10%; */
   }
   @media only screen and (max-width: 800px) {
     width: 250px;
@@ -331,6 +336,7 @@ const InfoCardImage = styled.img`
   transform: scale(1.2);
   transition: transform 0.5s ease-in-out;
   @media only screen and (max-width: 800px) {
+    width: 100px;
   }
   @media only screen and (max-width: 480px) {
     width: 80px;
@@ -339,22 +345,18 @@ const InfoCardImage = styled.img`
 
 const InfoCard = styled.div`
   position: absolute;
-  bottom: 15%;
+  bottom: 25%;
   border: 1px solid #ffffff21;
-  border-radius: 8px;
-  width: 400px;
+  border-radius: 40px;
+  width: 450px;
   display: flex;
   color: #2d2d2d;
   align-items: center;
   padding: 10px;
   cursor: pointer;
   background: radial-gradient(circle, #ffffffde, #c1c1c16b);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.407);
+  box-shadow: 0 0 4px 0px rgba(0, 0, 0, 0.644);
   transition: background 0.3s ease;
-
-  &:hover {
-    background: radial-gradient(circle, #ffffffc5, #c1c1c118);
-  }
 
   &:hover ${InfoCardImage} {
     transform: scale(1.4);
@@ -362,14 +364,19 @@ const InfoCard = styled.div`
   }
   @media only screen and (max-width: 1200px) {
     transform: scale(0.8);
+    bottom: 15%;
+    width: 400px;
+    padding: 8px;
   }
   @media only screen and (max-width: 800px) {
     width: 100%;
-    bottom: 10%;
+    bottom: 8%;
+    padding: 7px;
   }
   @media only screen and (max-width: 480px) {
     width: 110%;
-    padding: 5px;
+    padding: 5px 2px;
+    bottom: 0%;
   }
 `;
 
@@ -384,15 +391,17 @@ const InfoCardHead = styled.h3`
   text-transform: capitalize;
   font-size: 25px;
   display: flex;
+  color: black;
   justify-content: space-between;
   align-items: center;
-  font-family: 'Pokemon solid', sans-serif;
+  font-family: 'Quicksand bold', sans-serif;
   transition: color 0.3s ease;
 `;
 
 const InfoCardDetails = styled.p`
-  font-size: 15px;
+  font-size: 18px;
   transition: color 0.3s ease;
+  font-family: 'Quicksand Book', sans-serif;
 `;
 
 const PokemonTypeHolder = styled.div`
@@ -414,111 +423,100 @@ const TypeIcon = styled.img`
   }
 `;
 
-const MoreDetails = styled.div`
+const MoreDetails = styled.div<{ type: PokemonType }>`
   width: 92%;
-  min-height: 90vh;
+  min-height: 30vh;
   display: flex;
+  padding: 3% 0%;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border: 3px solid #ffffff;
   border-radius: 40px;
+  background-color: ${(props) => props.theme.pokemonType[props.type] || 'gray'};
+  box-shadow: -5px 2px 10px 0px #000000c3;
+  border-radius: 40px;
+  animation: ${fadeIn} 0.5s ease-in-out 1s forwards;
+  opacity: 0;
 `;
 
 const MoreDetailsContainer = styled.div`
   display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-  margin: 0 auto;
-  width: 70%;
-  max-width: 1200px;
+  justify-content: space-between;
+  gap: 20px;
+  /* background-color: red; */
+  padding: 0 2%;
+  @media only screen and (max-width: 1200px) {
+    flex-direction: column-reverse;
+    align-items: center;
+  }
+  @media only screen and (max-width: 800px) {
+  }
+  @media only screen and (max-width: 480px) {
+  }
 `;
 
 const AbilityHolder = styled.div`
-  background: radial-gradient(circle, #ffffffde, #c1c1c16b);
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 20px;
-  width: 45%;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.407);
-  transition: transform 0.3s;
-  &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.407);
-  }
-  &:first-child {
-    width: 25%;
-    box-shadow: 0 4px 15px rgba(0, 121, 107, 0.2);
-  }
-`;
-
-const AbilityHeading = styled.h2`
-  font-size: 1.5rem;
-  margin-bottom: 10px;
-  color: #555;
-`;
-
-const ULItem = styled.li`
-  list-style-type: none;
-  margin: 5px 0;
-  color: #444;
-`;
-
-const InfoData = styled.div`
-  margin-bottom: 10px;
-  /* background-color: #c32d2d; */
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  width: 60%;
+  gap: 10px;
+  padding: 20px 10px;
+  background: white;
+  box-shadow: 0 0 4px 0px rgba(0, 0, 0, 0.644);
+  transition: background 0.3s ease;
+  border-radius: 15px;
+  &:first-child {
+    width: 35%;
+    padding: 20px 5px;
+    background: radial-gradient(circle, #ffffffde, #c1c1c16b);
+  }
+
+  @media only screen and (max-width: 1200px) {
+    width: 90%;
+    &:first-child {
+      width: 90%;
+    }
+  }
+  @media only screen and (max-width: 800px) {
+    &:first-child {
+      width: 90%;
+      /* width: max-content; */
+    }
+  }
+  @media only screen and (max-width: 550px) {
+    padding: 15px 5px;
+  }
 `;
 
-const StatKey = styled.span`
-  font-weight: bold;
-  color: #555;
-`;
-
-const StatValue = styled.span`
-  color: #777;
-`;
-
-const Heading = styled.h2`
-  margin-block: 10px;
-  width: 100%;
-  text-align: left;
-  margin-left: 8%;
-  font-family: 'Pokemon Hollow', sans-serif;
-`;
-
-const RangeContainer = styled.div`
-  width: 80%;
-  padding: 0 20px;
+// InfoData styling
+const InfoData = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  align-items: center;
+  align-items: flex-start;
+  background-color: #ffffff;
+  padding: 10px;
+  justify-content: space-around;
+  /* gap: 10%; */
+  border-radius: 5px;
+  min-width: 150px;
+  @media only screen and (max-width: 1200px) {
+    width: 20%;
+    padding: 20px 10px;
+  }
+  @media only screen and (max-width: 800px) {
+  }
+  @media only screen and (max-width: 480px) {
+  }
 `;
 
-const EvolutionContainer = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  gap: 20px;
+const StatKey = styled.div`
+  font-weight: bold;
+  font-family: 'Quicksand bold', sans-serif;
+  color: #333;
 `;
 
-const EvolutionCard = styled.div`
-  width: 250px;
-  height: 250px;
-  border-radius: 50%;
-  border: 2px solid white;
-  background-color: #8080805b;
-  overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const EvolutionImage = styled.img`
-  width: 70%;
-  height: auto;
-  filter: saturate(1.5);
-  /* background-color: red; */
+const StatValue = styled.div`
+  font-family: 'Quicksand Book', sans-serif;
+  color: #666;
 `;

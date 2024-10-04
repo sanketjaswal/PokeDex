@@ -27,6 +27,8 @@ const ToggleContainer = styled.label`
   display: inline-block;
   width: 60px;
   height: 30px;
+  font-family: 'Quicksand Book', sans-serif;
+
   transform: scale(0.9);
 `;
 
