@@ -20,10 +20,6 @@ jobs:
         uses: codepunkt/npm-lockfile-changes@main
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          # collapsibleThreshold: 25
-          # failOnDowngrade: false
-          # path: package-lock.json
-          # updateComment: true
 
   lint:
     name: Lint
