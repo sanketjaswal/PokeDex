@@ -134,7 +134,7 @@ export const Home: React.FC = () => {
           <ToggleText>{showAll ? 'Classic ' : 'All'}</ToggleText>
         </ToogleContainer>
       </Form>
-      {/* <Loader></Loader> */}
+      <Loader></Loader>
       <FilterHolder>
         {types?.map((item) =>
           item.name == 'stellar' || item.name == 'unknown' ? (

@@ -39,7 +39,6 @@ const Container = styled.div`
   margin: 0;
   position: relative;
   text-align: center;
-  /* background-color: green; */
 `;
 
 const Slider = styled.div`
