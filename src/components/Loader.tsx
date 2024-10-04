@@ -33,7 +33,7 @@ const rotateReverse = keyframes`
 const LoaderContainer = styled.div`
   width: 50px;
   height: 50px;
-  margin: 80px;
+  margin: 30px 75px;
   /* background-color: blue; */
   position: relative;
   display: flex;

@@ -42,7 +42,7 @@ export const PokemonCard: React.FC<ListPokemon> = ({ url }) => {
         <ImageHolder type={pokemonDetails?.types[0].type.name || 'gray'}>
           <TypeBackground
             key={pokemonDetails?.types[0].type.name}
-            src={`/assets/background/${pokemonDetails?.types[0].type.name}Bg.svg`}
+            src={`assets/background/${pokemonDetails?.types[0].type.name}Bg.svg`}
           ></TypeBackground>
           <Image
             className="card-image"
@@ -62,7 +62,7 @@ export const PokemonCard: React.FC<ListPokemon> = ({ url }) => {
               <TypeIcon
                 alt={item?.type?.name}
                 key={item?.type?.name}
-                src={`/assets/${item.type.name}.svg`}
+                src={`assets/${item.type.name}.svg`}
               ></TypeIcon>
             ))}
           </PokemonTypeHolder>
@@ -72,6 +72,7 @@ export const PokemonCard: React.FC<ListPokemon> = ({ url }) => {
   );
 };
 
+//Styled Components
 const fadeIn = keyframes`
   from {
     opacity: 0;
@@ -93,7 +94,20 @@ const Image = styled.img`
   }
 `;
 
-//Styled Components
+const Name = styled.p`
+  font-size: 20px;
+  margin: 0;
+  text-align: center;
+  text-transform: capitalize;
+  transition: all.3s;
+  font-family: 'Pokemon Hollow', sans-serif;
+  @media only screen and (max-width: 465px) {
+    background-color: #fff;
+    width: 100%;
+    text-align: center;
+  }
+`;
+
 const CardContainer = styled.div`
   width: 200px;
   display: flex;
@@ -120,6 +134,11 @@ const CardContainer = styled.div`
     filter: drop-shadow(0 0 5px ${(props) => props.theme.colors.dropShadow})
       saturate(2);
     transition: ease-out 0.3s;
+  }
+
+  &:hover ${Name} {
+    font-family: 'Pokemon Solid', sans-serif;
+    /* transition: 0.5s; */
   }
 
   @media only screen and (max-width: 800px) {
@@ -167,21 +186,6 @@ const CardContent = styled.div`
   flex: 1;
   gap: 8px;
   flex-direction: column;
-`;
-
-const Name = styled.h2`
-  font-size: 20px;
-  font-weight: bold;
-  margin: 0;
-  text-align: center;
-  text-transform: capitalize;
-  font-family: 'Pokemon Hollow', sans-serif;
-  @media only screen and (max-width: 465px) {
-    background-color: #fff;
-    width: 100%;
-    text-align: center;
-    /* justify-content: center; */
-  }
 `;
 
 const Number = styled.div`
