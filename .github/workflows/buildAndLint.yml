@@ -13,11 +13,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install client dependencies
+      - name: Install dependencies
         run: |
           npm install
 
-      - name: Run ESLint on client
+      - name: Run ESLint
         run: |
           npm run lint
 
@@ -28,10 +28,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install client dependencies
+      - name: Install dependencies
         run: |
           npm install
 
-      - name: Run client build
+      - name: Run build
         run: |
           npm run build

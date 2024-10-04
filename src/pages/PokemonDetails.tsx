@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import { keyframes, styled } from 'styled-components';
 
 import { PokemonDetail, PokemonType } from '../models';
 import { fetchEvolutionData, fetchPokemonDetails } from '../apis';
-import { EvolutionChain } from '../models/evolutionData';
+// import { EvolutionChain } from '../models/evolutionData';
 import RangeSlider from '../components/rangeTab';
 
 export const PokemonDetails: React.FC = () => {

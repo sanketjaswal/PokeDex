@@ -5,7 +5,7 @@ import { keyframes, styled } from 'styled-components';
 
 import { fetchPokemonDetails } from '../apis';
 import { PokemonDetail, ListPokemon, PokemonType } from '../models';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 export const PokemonCard: React.FC<ListPokemon> = ({ url }) => {
   const [pokemonDetails, setPokemonDetails] = useState<PokemonDetail | null>(
@@ -35,7 +35,7 @@ export const PokemonCard: React.FC<ListPokemon> = ({ url }) => {
         <ImageHolder type={pokemonDetails?.types[0].type.name || 'gray'}>
           <TypeBackground
             key={pokemonDetails?.types[0].type.name}
-            src={`/assets/background/${pokemonDetails?.types[0].type.name}Bg.svg`}
+            src={`assets/background/${pokemonDetails?.types[0].type.name}Bg.svg`}
           ></TypeBackground>
           <Image
             className="card-image"
@@ -55,7 +55,7 @@ export const PokemonCard: React.FC<ListPokemon> = ({ url }) => {
               <TypeIcon
                 alt={item?.type?.name}
                 key={item?.type?.name}
-                src={`/assets/${item.type.name}.svg`}
+                src={`PokeDex/assets/${item.type.name}.svg`}
               ></TypeIcon>
             ))}
           </PokemonTypeHolder>
@@ -166,20 +166,6 @@ const PokemonTypeHolder = styled.div`
 const TypeIcon = styled.img`
   width: 24px;
   height: 24px;
-`;
-
-const PokemonTypeText = styled.div<{ type: PokemonType }>`
-  font-size: 0.9rem;
-  color: white;
-  margin-bottom: 8px;
-  padding: 2.5px 7px;
-  width: 40%;
-  border-radius: 8px;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  background-color: ${(props) =>
-    props.theme.pokemonType[props.type] || '#919AA2'};
 `;
 
 const TypeBackground = styled.img`

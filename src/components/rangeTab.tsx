@@ -1,8 +1,5 @@
 import React from 'react';
-import styled, { keyframes } from 'styled-components';
-
-const green = '#A3CD99';
-const darkGreen = '#ffffff';
+import { styled, keyframes } from 'styled-components';
 
 interface SliderProps {
   name: string;
