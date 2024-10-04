@@ -2,20 +2,20 @@
 
 ###Overview
 
-The Pokedex Application is a React-based web application that allows users to view detailed information about various Pokémon. The app provides features such as filtering Pokémon by type and searching by name. It uses the Pokémon API for fetching data and includes responsive UI components to display Pokémon abilities, stats, and more.
+The Pokédex Application is a React web application that allows users to view detailed information about various Pokémons. The app provides features such as filtering Pokémons by type and searching by name. It uses the PokéAPI for fetching data and includes responsive UI components to display Pokémon abilities, stats, and more.
 
 
 ### Application Link
 
-```bash
-https://sanketjaswal.github.io/PokeDex
-```
+
+[https://sanketjaswal.github.io/PokeDex](https://sanketjaswal.github.io/PokeDex)
+
 
 
 ## Features
 
-- **Pokemon Listing**: View a list of Pokemon with basic details.
-- **Pokemon Details**: Click on a Pokemon to view detailed information.
+- **Listing**: View a list of Pokemon with basic details.
+- **Details**: Click on a Pokemon to view detailed information.
 - **Filtering**: Filter Pokemon by Pokemon type.
 - **Searching**: Search for specific Pokemon by name.
 - **Responsive Design**: The layout adapts seamlessly to different screen sizes.
