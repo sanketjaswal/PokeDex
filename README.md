@@ -79,12 +79,12 @@ Below is a list of dependencies used in the project:
 - Users can search for specific Pokémon by name using the search bar.
 - To implement search functionality that triggers on entering a single key, you can use the onChange event on the input field to capture user input. As the user types, filter the Pokémon list by checking if the Pokémon name includes the input string using JavaScript's includes() method, updating the displayed results dynamically.
 
-### Pokémon Filters
+### Filters
 
 - Users can filter Pokémon by type (e.g., Fire, Water, Grass).
 - To implement filtering by type, call the [PokéAPI](https://pokeapi.co/) with the selected type as a query parameter ([PokéAPI](https://pokeapi.co/)/api/v2/type/{type}). Upon selection, use onChange to trigger an API call, retrieve the Pokémon filtered by that type, and update the list accordingly.
 
-### Pokémon Pagination
+### Pagination
 
 - All data is first called and saved in a state.
 - To implement pagination the next set of the data is fetched form saved data and concatianted to the Pokemon data.
