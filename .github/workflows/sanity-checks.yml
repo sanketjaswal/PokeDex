@@ -6,19 +6,18 @@ on:
       - main
 
 jobs:
-  # Job 1: Lint
-  lockfile_changes:
-    name: Package Changes
-    runs-on: ubuntu-latest
-    # permissions:
-    #   pull-requests: write
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: NPM Lockfile Changes
-        uses: codepunkt/npm-lockfile-changes@main
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+  # lockfile_changes:
+  #   name: Package Changes
+  #   runs-on: ubuntu-latest
+  #   # permissions:
+  #   #   pull-requests: write
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
+  #     - name: NPM Lockfile Changes
+  #       uses: codepunkt/npm-lockfile-changes@main
+  #       with:
+  #         token: ${{ secrets.GITHUB_TOKEN }}
 
   lint:
     name: Lint
