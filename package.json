@@ -11,7 +11,7 @@
     "@types/node": "^16.18.112",
     "@types/react": "^18.3.10",
     "@types/react-dom": "^18.3.0",
-    "axios": "^1.7.7",
+    "axios": "^1.7.6",
     "axios-cache-interceptor": "^1.6.0",
     "dotenv": "^16.4.5",
     "react": "^18.3.1",
