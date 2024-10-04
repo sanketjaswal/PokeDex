@@ -8,14 +8,13 @@ on:
 jobs:
   # Job 1: Lint
   lockfile_changes:
-    name: Lockfile Changes
+    name: Package Changes
     runs-on: ubuntu-latest
     # permissions:
     #   pull-requests: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
-
+        uses: actions/checkout@v4
       - name: NPM Lockfile Changes
         uses: codepunkt/npm-lockfile-changes@main
         with:
